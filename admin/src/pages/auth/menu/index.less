@@ -1,0 +1,62 @@
+.menu {
+  background-color: #fff;
+  padding: 24px;
+
+  .auth-user-search {
+    display: flex;
+    align-items: center;
+
+    .search-item {
+      display: flex;
+      align-items: center;
+
+      .search-item-name {
+        min-width: 60px;
+      }
+    }
+
+    .search-btn:nth-child(2) {
+      margin-left: 20px;
+    }
+  }
+
+  .auth-user-table {
+    margin-top: 20px;
+  }
+}
+
+.auth-role-modal {
+  .form-item-name {
+    width: 100px !important;
+  }
+}
+
+.auth-user-modal {
+  .form-item {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
+
+    .form-item-name {
+      width: 80px;
+
+    }
+
+    .required {
+      position: relative;
+
+      &::after {
+        position: absolute;
+        content: '*';
+        color: red;
+        left: -8px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+
+    .form-item-value {
+      flex: 1;
+    }
+  }
+}

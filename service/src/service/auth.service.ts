@@ -1,4 +1,4 @@
-import { App, Config, Inject, Provide } from '@midwayjs/decorator';
+import { App, Config, Inject, Provide } from '@midwayjs/core';
 import { Tool } from '../utils/tool'
 import * as _ from 'lodash';
 

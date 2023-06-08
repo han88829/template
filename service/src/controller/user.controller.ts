@@ -1,4 +1,4 @@
-import { App, Body, Controller, Get, Inject, Post, Query } from '@midwayjs/decorator';
+import { App, Body, Controller, Get, Inject, Post, Query } from '@midwayjs/core';
 import { UserService } from '../service/user.service';
 import { Tool } from '../utils/tool';
 

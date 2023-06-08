@@ -1,6 +1,6 @@
 import { CacheManager } from '@midwayjs/cache';
 import { ILogger, IMiddleware } from '@midwayjs/core';
-import { App, Inject, Logger, Middleware } from '@midwayjs/decorator';
+import { App, Inject, Logger, Middleware } from '@midwayjs/core';
 import { NextFunction, Context } from '@midwayjs/koa';
 import { Tool } from '../utils/tool';
 

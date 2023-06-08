@@ -1,4 +1,4 @@
-import { App, Config, Inject, Provide } from '@midwayjs/decorator';
+import { App, Config, Inject, Provide } from '@midwayjs/core';
 import moment = require('moment');
 import { IApp } from '../interface';
 import * as OSS from 'ali-oss';

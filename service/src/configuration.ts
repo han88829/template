@@ -1,4 +1,4 @@
-import { Configuration, App, Config } from '@midwayjs/decorator';
+import { Configuration, App, Config } from '@midwayjs/core';
 import * as koa from '@midwayjs/koa';
 import * as validate from '@midwayjs/validate';
 import * as info from '@midwayjs/info';

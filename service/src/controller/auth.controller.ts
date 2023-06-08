@@ -1,4 +1,4 @@
-import { App, Body, Controller, Get, Inject, Post, Query } from '@midwayjs/decorator';
+import { App, Body, Controller, Get, Inject, Post, Query } from '@midwayjs/core';
 import { AuthService } from '../service/auth.service';
 
 @Controller('/api/auth', { middleware: ['isLoginMiddleware', 'isAuthMiddleware'] })

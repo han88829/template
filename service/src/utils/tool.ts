@@ -1,4 +1,4 @@
-import { Config, Inject, Provide, Scope, ScopeEnum } from '@midwayjs/decorator';
+import { Config, Inject, Provide, Scope, ScopeEnum } from '@midwayjs/core';
 import { Context } from 'koa';
 import * as _ from 'lodash';
 import * as jwt from 'jsonwebtoken';

@@ -16,6 +16,8 @@ module.exports = {
                 'public',
             ],
             node_args: '--harmony', // node的启动模式
+            // instances: "max",//进程数量 max最大 多进程时开启 
+            // exec_mode: "cluster",//cluster 默认fork 多进程时开启
             env: {
                 NODE_ENV: 'production', // 设置运行环境，此时process.env.NODE_ENV的值就是development
             },

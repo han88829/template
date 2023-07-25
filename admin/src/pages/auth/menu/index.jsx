@@ -1,22 +1,24 @@
 import { connect } from 'umi';
-import { useEffect } from 'react'
-import Search from './Search'
-import Table from './Table'
-import Modal from './Modal'
+import { useEffect } from 'react';
+import Search from './Search';
+import Table from './Table';
+import Modal from './Modal';
+import { PageContainer } from '@ant-design/pro-components';
 import './index.less';
 
 function App({ menu: { files }, dispatch }) {
-    useEffect(() => {
-        dispatch({ type: "menu/query" })
-    }, [])
-    return (<div className='menu'>
+  useEffect(() => {
+    dispatch({ type: 'menu/query' });
+  }, []);
+  return (
+    <PageContainer>
+      <div className="menu">
         <Search></Search>
         <Table />
         <Modal />
-    </div>)
-
+      </div>
+    </PageContainer>
+  );
 }
 
-export default connect(
-    ({ menu }) => ({ menu })
-)(App);
+export default connect(({ menu }) => ({ menu }))(App);

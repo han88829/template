@@ -1,10 +1,10 @@
 import { connect } from 'umi';
-import { ModalForm, ProForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
+import { ModalForm, ProForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 const App = ({ template: { data, visible }, dispatch, loading }) => {
   return (
     <ModalForm
       title={data.id ? '编辑公告' : '新建公告'}
-      visible={visible}
+      open={visible}
       width={500}
       initialValues={{ ...data }}
       autoFocusFirstInput

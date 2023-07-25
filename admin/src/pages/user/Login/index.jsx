@@ -1,9 +1,9 @@
 import { login } from '@/services/api';
 import { LockOutlined, MobileOutlined, UserOutlined } from '@ant-design/icons';
-import { LoginForm, ProFormCaptcha, ProFormText } from '@ant-design/pro-form';
+import { LoginForm, ProFormCaptcha, ProFormText } from '@ant-design/pro-components';
 import { Alert, message, Tabs } from 'antd';
 import { useState } from 'react';
-import { history, useModel } from 'umi';
+import { history, useModel } from '@umijs/max';
 import styles from './index.less';
 
 const LoginMessage = ({ content }) => (
@@ -38,20 +38,16 @@ const Login = () => {
       localStorage.setItem('token', data);
 
       if (code == 200) {
-        const defaultLoginSuccessMessage = '登录成功！';
-        message.success(defaultLoginSuccessMessage);
+        message.success('登录成功！');
         await fetchUserInfo();
-        /** 此方法会跳转到 redirect 参数所在的位置 */
-
         if (!history) return;
-        const { query } = history.location;
+        const { query = {} } = history.location;
         const { redirect } = query;
         history.push(redirect || '/');
-        return;
       }
     } catch (error) {
-      const defaultLoginFailureMessage = '登录失败，请重试！';
-      message.error(defaultLoginFailureMessage);
+      console.log(error);
+      message.error('登录失败，请重试！');
     }
   };
 
@@ -70,10 +66,20 @@ const Login = () => {
             await handleSubmit(values);
           }}
         >
-          <Tabs activeKey={type} onChange={setType}>
-            <Tabs.TabPane key="account" tab={'账户密码登录'} />
-            <Tabs.TabPane key="mobile" tab={'手机号登录'} />
-          </Tabs>
+          <Tabs
+            activeKey={type}
+            onChange={setType}
+            items={[
+              {
+                key: 'account',
+                label: `账户密码登录`,
+              },
+              {
+                key: 'mobile',
+                label: `手机号登录`,
+              },
+            ]}
+          ></Tabs>
 
           {status === 'error' && loginType === 'account' && (
             <LoginMessage content={'错误的用户名和密码(admin/ant.design)'} />
@@ -86,7 +92,7 @@ const Login = () => {
                   size: 'large',
                   prefix: <UserOutlined className={styles.prefixIcon} />,
                 }}
-                placeholder={'用户名: admin or user'}
+                placeholder={'请输入用户名'}
                 rules={[
                   {
                     required: true,
@@ -100,7 +106,7 @@ const Login = () => {
                   size: 'large',
                   prefix: <LockOutlined className={styles.prefixIcon} />,
                 }}
-                placeholder={'密码: ant.design'}
+                placeholder={'请输入密码'}
                 rules={[
                   {
                     required: true,

@@ -18,7 +18,7 @@ const App = ({ menu: { actionData, visible, data }, dispatch, loading }) => {
             <Modal
                 className="auth-user-modal auth-role-modal"
                 title={!actionData.id ? '新增' : "编辑"}
-                visible={visible}
+                open={visible}
                 onCancel={onClose}
                 width={800}
                 confirmLoading={loading}
@@ -66,12 +66,12 @@ const App = ({ menu: { actionData, visible, data }, dispatch, loading }) => {
                     </div>
                     <Switch checked={actionData.showMenu == 1} onChange={v => onChange('showMenu', v ? 1 : 2)} />
                 </div>}
-                {actionData.type > 1 && <div className="form-item ">
-                    <div className="form-item-name required">
+                <div className="form-item ">
+                    <div className={`form-item-name required `}>
                         路由
                     </div>
                     <Input value={actionData.path} onChange={e => onChange('path', e.target.value)} className="form-item-value" />
-                </div>}
+                </div>
                 {actionData.type != 3 && <div className="form-item ">
                     <div className="form-item-name">
                         节点图标

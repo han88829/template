@@ -4,7 +4,7 @@ const App = ({ template: { data, detailOpen }, dispatch }) => {
   return (
     <Modal
       title={false}
-      visible={detailOpen}
+      open={detailOpen}
       width={1000}
       footer={false}
       onCancel={() => dispatch({ type: 'template/update', payload: { detailOpen: false } })}

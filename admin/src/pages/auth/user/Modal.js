@@ -20,7 +20,7 @@ const App = () => {
             <Modal
                 className="auth-user-modal"
                 title={!actionData.id ? '新增' : "编辑"}
-                visible={visible}
+                open={visible}
                 onCancel={onClose}
                 onOk={onSubmit}
             >

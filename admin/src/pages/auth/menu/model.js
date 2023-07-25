@@ -32,7 +32,7 @@ export default {
         },
         *onSubmit({ payload: data }, { call, put }) {
             if (!data.name) return message.error('请输入节点名称！');
-            if (data.type > 1 && !data.path) return message.error('请输入节点路由！');
+            if (!data.path) return message.error('请输入节点路由！');
             const res = yield call(menuSave, data);
             if (res.code == 200) {
                 message.success('保存成功！');

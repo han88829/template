@@ -1,9 +1,8 @@
-import ProTable from '@ant-design/pro-table';
 import { Space, Button, Popconfirm } from 'antd';
 import { connect } from 'umi';
 import ActionModal from './Modal';
 import { PlusCircleOutlined } from '@ant-design/icons';
-import { PageContainer } from '@ant-design/pro-components';
+import { PageContainer, ProTable } from '@ant-design/pro-components';
 import Detail from './Detail';
 
 const App = ({ template: { params, list }, dispatch }) => {

@@ -40,10 +40,9 @@ const Login = () => {
       if (code == 200) {
         message.success('登录成功！');
         await fetchUserInfo();
-        if (!history) return;
         const { query = {} } = history.location;
         const { redirect } = query;
-        history.push(redirect || '/');
+        location.href = redirect || '/';
       }
     } catch (error) {
       console.log(error);

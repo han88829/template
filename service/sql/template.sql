@@ -3,15 +3,15 @@
 
  Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80031 (8.0.31)
+ Source Server Version : 80033 (8.0.33)
  Source Host           : localhost:3306
  Source Schema         : template
 
  Target Server Type    : MySQL
- Target Server Version : 80031 (8.0.31)
+ Target Server Version : 80033 (8.0.33)
  File Encoding         : 65001
 
- Date: 23/11/2022 15:39:19
+ Date: 26/07/2023 10:03:50
 */
 
 SET NAMES utf8mb4;
@@ -61,7 +61,7 @@ CREATE TABLE `menu` (
 -- Records of menu
 -- ----------------------------
 BEGIN;
-INSERT INTO `menu` (`id`, `createTime`, `updateTime`, `name`, `userId`, `sort`, `type`, `pid`, `icon`, `path`, `showMenu`, `isDel`) VALUES (1, '2022-05-07 14:25:51.985189', '2022-05-07 16:48:19.884481', '权限管理', 65, 0, 1, 0, 'SettingOutlined', NULL, 1, 0);
+INSERT INTO `menu` (`id`, `createTime`, `updateTime`, `name`, `userId`, `sort`, `type`, `pid`, `icon`, `path`, `showMenu`, `isDel`) VALUES (1, '2022-05-07 14:25:51.985189', '2022-05-07 16:48:19.884481', '权限管理', 65, 0, 1, 0, 'SettingOutlined', '/auth', 1, 0);
 INSERT INTO `menu` (`id`, `createTime`, `updateTime`, `name`, `userId`, `sort`, `type`, `pid`, `icon`, `path`, `showMenu`, `isDel`) VALUES (2, '2022-05-07 14:29:26.969657', '2022-05-07 18:04:35.283968', '角色管理', 1, 0, 2, 1, NULL, '/auth/role', 1, 0);
 INSERT INTO `menu` (`id`, `createTime`, `updateTime`, `name`, `userId`, `sort`, `type`, `pid`, `icon`, `path`, `showMenu`, `isDel`) VALUES (12, '2022-05-07 15:33:08.933020', '2022-05-07 18:04:38.628340', '用户管理', 65, 1, 2, 1, '', '/auth/user', 1, 0);
 INSERT INTO `menu` (`id`, `createTime`, `updateTime`, `name`, `userId`, `sort`, `type`, `pid`, `icon`, `path`, `showMenu`, `isDel`) VALUES (17, '2022-05-07 15:47:09.922630', '2022-05-07 18:04:50.944944', '部门管理', 65, 1, 2, 1, '', '/auth/department', 1, 0);

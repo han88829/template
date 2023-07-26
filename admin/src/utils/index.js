@@ -18,3 +18,12 @@ export const getTreeSelectData = (data, pid = 0) => {
     let res = data.filter(x => x.pid == pid).map(x => ({ key: x.id, title: x.name, children: getTreeSelectData(data, x.id) }));
     return res;
 }
+
+export const getQueryString = (variable, query = window.location.search.substring(1)) => {
+    let vars = query.split("&");
+    for (let i = 0; i < vars.length; i++) {
+        let pair = vars[i].split("=");
+        if (pair[0] == variable) { return decodeURIComponent(pair[1]); }
+    }
+    return false;
+}

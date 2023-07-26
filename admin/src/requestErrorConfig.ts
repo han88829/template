@@ -41,7 +41,8 @@ export const errorConfig: RequestConfig = {
     // 错误接收及处理
     errorHandler: (error: any, opts: any) => {
       if (opts?.skipErrorHandler) throw error;
-      // 我们的 errorThrower 抛出的错误。
+      // 我们的 errorThrower 抛出的错误。 
+
       if (error.name === 'BizError') {
         const errorInfo: ResponseStructure | undefined = error.info;
         if (errorInfo) {
@@ -77,10 +78,10 @@ export const errorConfig: RequestConfig = {
         // 请求已经成功发起，但没有收到响应
         // \`error.request\` 在浏览器中是 XMLHttpRequest 的实例，
         // 而在node.js中是 http.ClientRequest 的实例
-        message.error('None response! Please retry.');
+        message.error('请求失败，请重试!');
       } else {
         // 发送请求时出了点问题
-        message.error('Request error, please retry.');
+        message.error(error?.message ?? '请求失败，请重试!');
       }
     },
   },
@@ -94,16 +95,4 @@ export const errorConfig: RequestConfig = {
     },
   ],
 
-  // 响应拦截器
-  responseInterceptors: [
-    (response) => {
-      // 拦截响应数据，进行个性化处理
-      const { data } = response as unknown as ResponseStructure;
-
-      if (data?.success === false) {
-        message.error('请求失败！');
-      }
-      return response;
-    },
-  ],
 };

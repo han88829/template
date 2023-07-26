@@ -9,6 +9,7 @@ import React from 'react';
 import { userMenuLst } from '@/services/auth';
 import RightContent from '@/components/RightContent';
 import * as Icons from '@ant-design/icons';
+import { message } from 'antd';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -48,7 +49,7 @@ export async function getInitialState(): Promise<any> {
       const { data } = await userMenuLst();
       return { currentUser: msg.data, authInfo: data };
     } catch (error) {
-      // history.push(loginPath);
+      history.push(loginPath);
     }
     return undefined;
   };
@@ -151,6 +152,20 @@ export const request = {
       const token = localStorage.getItem('token');
       options.headers.Authorization = token;
       return { url: `${baseUrl}${url}`, options };
+    },
+  ],
+  responseInterceptors: [
+    (res: any) => {
+      const data = res?.data ?? {};
+      if (data?.code == 403) {
+        const token = localStorage.getItem('token');
+        message.error(token ? '登录已过期，请重新登录！' : '请登录！');
+        history.push(`${loginPath}?redirect=${encodeURIComponent(location.pathname)}`);
+        return res;
+      } else if (data?.code != 200) {
+        throw new Error(data?.message ?? '请求失败！');
+      }
+      return res;
     },
   ],
 };

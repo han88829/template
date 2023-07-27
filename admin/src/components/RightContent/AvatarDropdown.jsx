@@ -1,9 +1,9 @@
 import ava from '@/images/ava.png';
-import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Menu, Spin } from 'antd';
+import { LogoutOutlined } from '@ant-design/icons';
+import { history, useModel } from '@umijs/max';
+import { Avatar, Spin } from 'antd';
 import { stringify } from 'querystring';
-import React, { useCallback } from 'react';
-import { history, useModel } from 'umi';
+import React from 'react';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
 
@@ -26,20 +26,6 @@ const loginOut = async () => {
 
 const AvatarDropdown = ({ menu }) => {
   const { initialState, setInitialState } = useModel('@@initialState');
-  const onMenuClick = useCallback(
-    (event) => {
-      const { key } = event;
-
-      if (key === 'logout') {
-        setInitialState((s) => ({ ...s, currentUser: undefined }));
-        loginOut();
-        return;
-      }
-
-      history.push(`/account/${key}`);
-    },
-    [setInitialState],
-  );
   const loading = (
     <span className={`${styles.action} ${styles.account}`}>
       <Spin
@@ -62,24 +48,19 @@ const AvatarDropdown = ({ menu }) => {
     return loading;
   }
 
-  const menuHeaderDropdown = (
-    <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
-      {menu && (
-        <Menu.Item key="center">
-          <UserOutlined />
-          个人中心
-        </Menu.Item>
-      )}
-      {menu && <Menu.Divider />}
-
-      <Menu.Item key="logout">
-        <LogoutOutlined />
-        退出登录
-      </Menu.Item>
-    </Menu>
-  );
+  const menuHeaderDropdown = [
+    {
+      label: '退出登录',
+      icon: <LogoutOutlined />,
+      key: 'logout',
+      onClick: () => {
+        setInitialState((s) => ({ ...s, currentUser: undefined }));
+        loginOut();
+      },
+    },
+  ];
   return (
-    <HeaderDropdown menu={menuHeaderDropdown}>
+    <HeaderDropdown menu={{ items: menuHeaderDropdown }}>
       <span className={`${styles.action} ${styles.account}`}>
         <Avatar size="small" className={styles.avatar} src={currentUser.ava || ava} alt="avatar" />
         <span className={`${styles.name} anticon`}>{currentUser.name}</span>

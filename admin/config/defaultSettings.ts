@@ -15,8 +15,10 @@ const Settings: ProLayoutProps & {
   "fixSiderbar": true,
   "pwa": true,
   "logo": "https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg",
+  "title": "智击科技",
   "token": {
     "sider": {
+      "colorMenuBackground": "#fff",
       "colorBgMenuItemSelected": "#e6f4ff",
       "colorTextMenuSelected": "#1677ff",
       "colorTextMenuItemHover": "#1677ff",
@@ -28,6 +30,9 @@ const Settings: ProLayoutProps & {
       "colorTextMenu": "#dfdfdf",
       "colorTextMenuActive": "#1677ff",
       "colorBgMenuItemSelected": "#22272b"
+    },
+    "pageContainer": {
+      "paddingInlinePageContainerContent": 24
     }
   }
 };

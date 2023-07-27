@@ -15,7 +15,7 @@ const Settings: ProLayoutProps & {
   "fixSiderbar": true,
   "pwa": true,
   "logo": "https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg",
-  "title": "智击科技",
+  title: "智击科技",
   "token": {
     "sider": {
       "colorMenuBackground": "#fff",
@@ -31,8 +31,8 @@ const Settings: ProLayoutProps & {
       "colorTextMenuActive": "#1677ff",
       "colorBgMenuItemSelected": "#22272b"
     },
-    "pageContainer": {
-      "paddingInlinePageContainerContent": 24
+    pageContainer: {
+      paddingInlinePageContainerContent: 24
     }
   }
 };

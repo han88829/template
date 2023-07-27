@@ -1,5 +1,5 @@
 import { Space, Button, Popconfirm } from 'antd';
-import { connect } from 'umi';
+import { connect } from '@umijs/max';
 import ActionModal from './Modal';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import { PageContainer, ProTable } from '@ant-design/pro-components';

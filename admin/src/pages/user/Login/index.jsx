@@ -4,7 +4,6 @@ import { LoginForm, ProFormCaptcha, ProFormText } from '@ant-design/pro-componen
 import { Alert, message, Tabs } from 'antd';
 import { useState } from 'react';
 import { history, useModel } from '@umijs/max';
-import { getQueryString } from '@/utils';
 import styles from './index.less';
 
 const LoginMessage = ({ content }) => (
@@ -41,7 +40,8 @@ const Login = () => {
       if (code == 200) {
         message.success('登录成功！');
         await fetchUserInfo();
-        const redirect = history?.location?.query?.redirect ?? getQueryString('redirect');
+        const { query = {} } = history.location;
+        const { redirect } = query;
         location.href = redirect || '/';
       }
     } catch (error) {

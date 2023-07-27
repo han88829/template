@@ -21,11 +21,12 @@ export default () => {
         total: 0,
         name: ""
     });
-    const getData = async () => {
+    const getData = async (data) => {
         setLoading(true);
-        const res = await deptLst(params);
+        const res = await deptLst(data);
         setData(res.data || []);
         setLoading(false);
+        setParams({ ...data, total: res.data.length })
     }
     /**
      * @description: 停用账号
@@ -36,7 +37,10 @@ export default () => {
         setLoading(true);
         const { code } = await deptDel({ id });
         setLoading(false);
-        if (code == 200) getData();
+        if (code == 200) {
+            message.success('删除成功！');
+            getData();
+        }
     }
 
     const onShow = (data) => {

@@ -1,6 +1,6 @@
 import { Modal, Form, Input, Select } from 'antd';
 import React, { useEffect } from 'react';
-import { useModel } from 'umi';
+import { useModel } from '@umijs/max';
 
 const { Option } = Select;
 

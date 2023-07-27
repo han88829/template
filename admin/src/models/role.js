@@ -6,6 +6,7 @@ import _ from 'lodash';
 
 const defaultData = {
   name: '',
+  describe: "",
   keys: [],
   deptIds: [],
 };
@@ -22,10 +23,11 @@ export default () => {
     total: 0,
     name: '',
   });
-  const getData = async () => {
+  const getData = async (data) => {
     setLoading(true);
-    const res = await roleLst(params);
+    const res = await roleLst(data);
     setData(res.data || []);
+    setParams({ ...data, total: res.data.length })
     setLoading(false);
   };
   const getAuthData = async () => {

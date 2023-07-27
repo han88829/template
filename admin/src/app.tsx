@@ -10,11 +10,20 @@ import { userMenuLst } from '@/services/auth';
 import RightContent from '@/components/RightContent';
 import * as Icons from '@ant-design/icons';
 import { message } from 'antd';
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
+import locale from 'antd/locale/zh_CN';
+
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
 const baseUrl = isDev ? '' : '';
+
+const isNoLogin = () => {
+  const paths = ['/user/login'];
+  return paths.includes(location.pathname);
+};
 
 const ICONS: any = Icons;
 const getMenuData = (data: any, pid = 0) => {
@@ -55,7 +64,7 @@ export async function getInitialState(): Promise<any> {
   };
   // 如果不是登录页面，执行
   const { location } = history;
-  if (location.pathname !== loginPath) {
+  if (!isNoLogin()) {
     const { currentUser, authInfo }: any = await fetchUserInfo();
     return {
       fetchUserInfo,
@@ -83,7 +92,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       console.log(location);
 
       // 如果没有登录，重定向到 login
-      if (!initialState?.currentUser && location.pathname !== loginPath) {
+      if (!initialState?.currentUser && !isNoLogin()) {
         history.push(loginPath);
       }
     },

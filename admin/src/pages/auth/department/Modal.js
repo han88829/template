@@ -1,6 +1,7 @@
-import { Modal, Input } from 'antd';
+import { Modal } from 'antd';
 import React from 'react';
-import { useModel } from 'umi';
+import { useModel } from '@umijs/max';
+import Input from '@/components/Input';
 
 const App = () => {
     const { visible, onClose, actionData, onSubmit, setActionData } = useModel('department');

@@ -1,5 +1,5 @@
 import { Table, Popconfirm, Space } from 'antd';
-import { connect, useAccess } from 'umi';
+import { connect, useAccess } from '@umijs/max';
 import { defaultData } from './model'
 
 function App({ menu: { data }, loading, dispatch }) {

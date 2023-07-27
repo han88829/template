@@ -1,6 +1,6 @@
 
 import { Button } from 'antd';
-import { connect, useAccess } from 'umi';
+import { connect, useAccess } from '@umijs/max';
 
 function App({ dispatch }) {
     const access = useAccess();

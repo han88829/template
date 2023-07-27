@@ -1,4 +1,4 @@
-import { connect } from 'umi';
+import { connect } from '@umijs/max';
 import { useEffect } from 'react';
 import Search from './Search';
 import Table from './Table';

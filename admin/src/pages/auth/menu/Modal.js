@@ -1,5 +1,5 @@
 import { Modal, Input, Radio, TreeSelect, InputNumber, Switch } from 'antd';
-import { connect } from 'umi';
+import { connect } from '@umijs/max';
 import { getTreeNode } from '@/utils'
 
 const App = ({ menu: { actionData, visible, data }, dispatch, loading }) => {

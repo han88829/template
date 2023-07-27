@@ -1,8 +1,7 @@
-import { Modal, Input, Tree, Select } from 'antd';
+import { Modal, Tree } from 'antd';
 import { useEffect } from 'react';
-import { useModel } from 'umi';
-
-const { Option } = Select;
+import { useModel } from '@umijs/max';
+import Input from '@/components/Input';
 
 const App = () => {
     const { visible, onClose, actionData, onSubmit, setActionData, authData } = useModel('role');
@@ -11,8 +10,9 @@ const App = () => {
         if (!deptLst.length) getDeptLst();
     }, []);
     const onChange = (name, value) => {
-        setActionData({ ...actionData, [name]: (value || "").trim() });
+        setActionData({ ...actionData, [name]: value });
     }
+
     return (
         <>
             <Modal
@@ -24,30 +24,13 @@ const App = () => {
             >
                 <div className="form-item ">
                     <div className="form-item-name required">
-                        名称
+                        角色名称
                     </div>
-                    <Input value={actionData.name} onChange={e => onChange('name', e.target.value)} className="form-item-value" />
-                </div>
-                <div className="form-item">
-                    <div className="form-item-name">
-                        部门组织权限
-                    </div>
-                    <Select value={actionData.deptIds} className="form-item-value"
-                        mode='multiple'
-                        onChange={v => {
-                            setActionData({ ...actionData, deptIds: v })
-                        }}
-                    >
-                        {
-                            deptLst.map(x => {
-                                return <Option key={x.id}>{x.name}</Option>
-                            })
-                        }
-                    </Select>
-                </div>
+                    <Input placeHolder="请输入角色名称" value={actionData.name} onChange={e => onChange('name', e.target.value)} className="form-item-value" />
+                </div> 
                 <div className="form-item ">
                     <div className="form-item-name required">
-                        菜单数据权限
+                        权限配置
                     </div>
                     <Tree
                         checkable

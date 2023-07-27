@@ -1,0 +1,25 @@
+.customInput {
+  position: relative;
+  display: inline-flex;
+  width: 100%;
+  min-width: 0;
+  padding: 4px 11px;
+  color: rgba(0, 0, 0, 0.88);
+  font-size: 14px;
+  line-height: 1.5714285714285714;
+  background-color: #ffffff;
+  background-image: none;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d9d9d9;
+  border-radius: 6px;
+  transition: all 0.2s;
+  outline: none;
+
+  &:focus-visible,
+  &:hover {
+    border-color: #40a9ff;
+    border-inline-end-width: 1px;
+    z-index: 1;
+  }
+}

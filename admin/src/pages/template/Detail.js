@@ -1,4 +1,4 @@
-import { connect } from 'umi';
+import { connect } from '@umijs/max';
 import { Modal, Descriptions } from 'antd';
 const App = ({ template: { data, detailOpen }, dispatch }) => {
   return (

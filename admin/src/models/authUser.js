@@ -12,7 +12,7 @@ const defaultData = {
 };
 
 export default () => {
-    const [data, setData] = useState({});
+    const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [visible, setVisible] = useState(false);
     const [actionData, setActionData] = useState(defaultData);
@@ -22,10 +22,11 @@ export default () => {
         total: 0,
         name: ""
     });
-    const getData = async () => {
+    const getData = async (data) => {
         setLoading(true);
-        const res = await userLst(params);
-        setData(res.data || {});
+        const res = await userLst(data);
+        setData(res.data.rows || []);
+        setParams({ ...data, total: res?.data?.total ?? 0 });
         setLoading(false);
     }
     /**

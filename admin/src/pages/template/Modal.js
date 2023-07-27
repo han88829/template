@@ -1,4 +1,4 @@
-import { connect } from 'umi';
+import { connect } from '@umijs/max';
 import { ModalForm, ProForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 const App = ({ template: { data, visible }, dispatch, loading }) => {
   return (

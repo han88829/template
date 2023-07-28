@@ -15,7 +15,7 @@ const Settings: ProLayoutProps & {
   "fixSiderbar": true,
   "pwa": true,
   "logo": "https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg",
-  title: "智击科技",
+  title: "后台管理",
   "token": {
     "sider": {
       "colorMenuBackground": "#fff",

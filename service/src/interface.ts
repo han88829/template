@@ -17,4 +17,5 @@ declare module '@midwayjs/core' {
 export interface IApp extends koa.Application {
   db: DbClient;
   user: any;
+  deptIds: String | Array<Number>
 }

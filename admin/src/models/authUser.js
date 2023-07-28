@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { userLst, disableUser, userSave } from '@/services/auth'
-import { message } from 'antd'
+import { userLst, disableUser, userSave } from '@/services/auth';
+import { message } from 'antd';
+import { deptLst, roleLst } from '@/services/open';
 
 const defaultData = {
     name: "",
@@ -17,6 +18,8 @@ export default () => {
     const [visible, setVisible] = useState(false);
     const [actionData, setActionData] = useState(defaultData);
     const [saving, setSaving] = useState(false);
+    const [deptData, setDept] = useState([]);
+    const [roleData, setRole] = useState([]);
     const [params, setParams] = useState({
         page: 1,
         total: 0,
@@ -24,10 +27,19 @@ export default () => {
     });
     const getData = async (data) => {
         setLoading(true);
-        const res = await userLst(data);
-        setData(res.data.rows || []);
-        setParams({ ...data, total: res?.data?.total ?? 0 });
+        if (data.roleId === "all") data.roleId = '';
+        if (data.deptId === "all") data.deptId = '';
+
+        const res = await userLst({ ...params, ...data });
+        setData(res?.data?.rows ?? []);
+        setParams({ ...params, ...data, total: res?.data?.total ?? 0 });
         setLoading(false);
+    }
+    const getExtraData = async () => {
+        const deptRes = await deptLst();
+        const roleRes = await roleLst();
+        setDept(deptRes.data || []);
+        setRole(roleRes.data || []);
     }
     /**
      * @description: 停用账号
@@ -42,26 +54,19 @@ export default () => {
     }
 
     const onShow = (data) => {
-        setVisible(true);
         setActionData(data || defaultData);
+        setVisible(true);
     }
     const onClose = () => {
         setVisible(false);
         setActionData(defaultData);
     }
-    const onSubmit = async () => {
-        if (!actionData.name) return message.error('请填写名称');
-        if (!actionData.account) return message.error('请填写账号');
-        if (!actionData.password && !actionData.id) return message.error('请填写密码');
-        if (!actionData.roleId) return message.error('请选择角色');
-        if (!actionData.deptId) return message.error('请选择部门');
-        setSaving(true);
-        const { code } = await userSave(actionData);
+    const onSubmit = async (values) => {
+        const { code } = await userSave(values);
         if (code == 200) {
             getData();
             onClose();
         }
-        setSaving(false);
     }
-    return { data, saving, setData, onSubmit, setActionData, actionData, onClose, visible, onShow, onDisableUser, loading, params, setParams, getData };
+    return { data, getExtraData, deptData, roleData, saving, setData, onSubmit, setActionData, actionData, onClose, visible, onShow, onDisableUser, loading, params, setParams, getData };
 };

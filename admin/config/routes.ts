@@ -59,6 +59,11 @@ export default [
         path: '/auth/menu',
         access: '/auth/menu',
         component: './auth/menu',
+      }, {
+        name: '日志管理',
+        path: '/auth/log',
+        access: '/auth/log',
+        component: './auth/log',
       },
       {
         path: '/auth',

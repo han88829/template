@@ -4,9 +4,21 @@ import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { Button, Space, Popconfirm, Tag } from 'antd';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import './index.less';
+import { useEffect, useRef } from 'react';
 
 function App() {
-  const { getData, data, onShow, params, onDisableUser, onDel } = useModel('authUser');
+  const { getData, getExtraData, deptData, roleData, data, onShow, params, onDisableUser } =
+    useModel('authUser');
+
+  useEffect(() => {
+    getExtraData();
+  }, []);
+  const actionRef = useRef(null);
+  const onValuesChange = (data) => {
+    if (data.roleId || data.deptId) {
+      actionRef?.current?.submit();
+    }
+  };
   const access = useAccess();
   const columns = [
     {
@@ -16,68 +28,83 @@ function App() {
       hideInTable: true,
     },
     {
-      title: '名称',
+      title: '序号',
+      dataIndex: 'id',
+      width: 80,
+      hideInSearch: true,
+      render: (d, r, i) => ~~((params.page - 1) * params.pageSize + i + 1),
+    },
+    {
+      title: '人员姓名',
       dataIndex: 'name',
       key: 'name',
       hideInSearch: true,
     },
     {
-      title: '账号',
-      dataIndex: 'account',
-      key: 'account',
+      title: '手机号',
+      dataIndex: 'mobile',
+      key: 'mobile',
       hideInSearch: true,
     },
     {
-      title: '角色名称',
-      dataIndex: 'roleName',
-      key: 'roleName',
-      hideInSearch: true,
-    },
-    {
-      title: '部门',
-      dataIndex: 'deptName',
-      key: 'deptName',
-      hideInSearch: true,
-    },
-    {
-      title: '状态',
-      dataIndex: 'disable',
-      key: 'disable',
+      title: '所属角色',
+      dataIndex: 'roleId',
+      key: 'roleId',
       valueType: 'select',
-      hideInSearch: true,
-      valueEnum: { 1: '停用', 0: '正常' },
-      render: (text, r) => {
-        return (
-          <Tag color={r.disable == 1 ? 'volcano' : 'geekblue'}>
-            {r.disable == 1 ? '停用' : '正常'}
-          </Tag>
-        );
-      },
+      initialValue: 'all',
+      valueEnum: new Map([
+        ['all', { text: '全部' }],
+        ...roleData.map((x) => [x.id, { text: x.name }]),
+      ]),
     },
-
+    {
+      title: '所属部门',
+      dataIndex: 'deptId',
+      key: 'deptId',
+      valueType: 'select',
+      initialValue: 'all',
+      valueEnum: new Map([
+        ['all', { text: '全部' }],
+        ...deptData.map((x) => [x.id, { text: x.name }]),
+      ]),
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createTime',
+      key: 'createTime',
+      valueType: 'dateTime',
+      hideInSearch: true,
+    },
     {
       title: '操作',
       dataIndex: 'action',
       hideInSearch: true,
       render: (text, record) => (
         <Space size="middle">
-          {access['/api/auth/roleSave'] && (
+          {access['/api/auth/roleSave'] && record.account != 'admin' && (
             <a
               onClick={() => {
-                onShow(record);
+                onShow({
+                  ...record,
+                  password: '',
+                  roleId: String(record.roleId || ''),
+                  deptId: String(record.deptId || ''),
+                });
               }}
             >
-              编辑
+              修改
             </a>
           )}
           {access['/api/user/disableUser'] && record.account != 'admin' && (
-            <a
-              onClick={() => {
-                onDisableUser(record.id);
-              }}
+            <Popconfirm
+              title="确定要删除吗"
+              description="删除后数据将不可还原，请谨慎操作！"
+              onConfirm={() => onDisableUser(record.id)}
+              okText="确定"
+              cancelText="取消"
             >
-              {record.disable ? '启用' : '停用'}
-            </a>
+              <a style={{ color: 'red' }}>删除</a>
+            </Popconfirm>
           )}
         </Space>
       ),
@@ -90,6 +117,8 @@ function App() {
           total: params.total,
           pageSize: 10,
         }}
+        formRef={actionRef}
+        form={{ onValuesChange }}
         rowKey="id"
         headerTitle="用户列表"
         request={(params) =>

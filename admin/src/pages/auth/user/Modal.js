@@ -1,84 +1,80 @@
-import { Modal, Form, Input, Select } from 'antd';
-import React, { useEffect } from 'react';
+import { ModalForm, ProFormText, ProFormSelect } from '@ant-design/pro-components';
+import React from 'react';
 import { useModel } from '@umijs/max';
 
-const { Option } = Select;
-
 const App = () => {
-    const { visible, onClose, actionData, onSubmit, setActionData } = useModel('authUser');
-    const { data = [], getData } = useModel('role');
-    const { data: deptLst, getData: getDeptLst } = useModel('department');
-    useEffect(() => {
-        if (!data.length) getData();
-        if (!deptLst.length) getDeptLst();
-    }, []);
-    const onChange = (name, value) => {
-        setActionData({ ...actionData, [name]: (value || "").trim() })
-    }
+    const { visible, onClose, deptData, roleData, actionData, onSubmit } = useModel('authUser');
     return (
-        <>
-            <Modal
-                className="auth-user-modal"
-                title={!actionData.id ? '新增' : "编辑"}
-                open={visible}
-                onCancel={onClose}
-                onOk={onSubmit}
-            >
-                <div className="form-item ">
-                    <div className="form-item-name required">
-                        名称
-                    </div>
-                    <Input value={actionData.name} onChange={e => onChange('name', e.target.value)} className="form-item-value" />
-                </div>
-                <div className="form-item">
-                    <div className="form-item-name required">
-                        账号
-                    </div>
-                    <Input value={actionData.account} disabled={actionData.id ? true : false} className="form-item-value" onChange={e => onChange('account', e.target.value)} />
-                </div>
-                <div className="form-item">
-                    <div className={`form-item-name ${actionData.id ? '' : 'required'}`}>
-                        密码
-                    </div>
-                    <Input value={actionData.password} type="password" className="form-item-value" onChange={e => onChange('password', e.target.value)} />
-                </div>
-                <div className="form-item">
-                    <div className="form-item-name">
-                        手机号
-                    </div>
-                    <Input value={actionData.mobile} className="form-item-value" onChange={e => onChange('mobile', e.target.value)} />
-                </div>
-
-                <div className="form-item">
-                    <div className="form-item-name required">
-                        角色
-                    </div>
-                    <Select value={`${actionData.roleId || ""}`} className="form-item-value" onChange={v => onChange('roleId', v)}>
-                        {
-                            data.map(x => {
-                                return <Option key={x.id}>{x.name}</Option>
-                            })
-                        }
-                    </Select>
-                </div>
-                <div className="form-item">
-                    <div className="form-item-name required">
-                        部门
-                    </div>
-                    <Select value={`${actionData.deptId}`} className="form-item-value"
-                        onChange={v => {
-                            setActionData({ ...actionData, deptId: v })
-                        }}
-                    >
-                        {
-                            deptLst.map(x => {
-                                return <Option key={x.id}>{x.name}</Option>
-                            })
-                        }
-                    </Select>
-                </div>
-            </Modal>
-        </>
+        <ModalForm
+            title={actionData.id ? '编辑' : '新增'}
+            open={visible}
+            width={500}
+            initialValues={{ ...actionData }}
+            autoFocusFirstInput
+            autoComplete="off"
+            modalProps={{
+                destroyOnClose: true,
+                onCancel: onClose,
+            }}
+            onFinish={async (values) => {
+                await onSubmit(values)
+            }}
+        >
+            <ProFormText
+                name="name"
+                label="人员姓名"
+                rules={[
+                    {
+                        required: true,
+                    },
+                ]}
+                placeholder="请输入人员姓名"
+            />
+            <ProFormText
+                name="mobile"
+                label="手机号"
+                rules={[
+                    {
+                        required: true,
+                    }, {
+                        pattern: /^1\d{10}$/,
+                        message: '手机号格式错误！',
+                    }
+                ]}
+                placeholder="请输入手机号"
+            />
+            <ProFormText.Password
+                name="password"
+                label="密码"
+                placeholder="请输入密码"
+                rules={actionData.id ? [] : [
+                    {
+                        required: true,
+                    },
+                    {
+                        min: 6,
+                        message: '密码至少设置六位数',
+                    }
+                ]}
+                fieldProps={{
+                    type: "password"
+                }}
+            />
+            <ProFormSelect
+                name="roleId"
+                label="所属角色"
+                rules={[{ required: true, }]}
+                placeholder="请选择所属角色"
+                valueEnum={roleData.reduce((a, b) => ({ ...a, [b.id]: b.name }), {})}
+            ></ProFormSelect>
+            <ProFormSelect
+                name="deptId"
+                label="所属部门"
+                rules={[{ required: true, }]}
+                placeholder="请选择所属部门"
+                valueEnum={deptData.reduce((a, b) => ({ ...a, [b.id]: b.name }), {})}
+            ></ProFormSelect>
+        </ModalForm>
     );
 };
 export default App;

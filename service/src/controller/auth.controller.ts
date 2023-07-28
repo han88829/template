@@ -1,5 +1,6 @@
 import { App, Body, Controller, Get, Inject, Post, Query } from '@midwayjs/core';
 import { AuthService } from '../service/auth.service';
+import { LogService } from '../service/log.service';
 
 @Controller('/api/auth', { middleware: ['isLoginMiddleware', 'isAuthMiddleware'] })
 export class AuthController {
@@ -8,6 +9,9 @@ export class AuthController {
 
   @Inject()
   auth: AuthService;
+
+  @Inject()
+  log: LogService;
 
   @Get('/deptLst')
   async deptLst(@Query('name') name: string) {
@@ -52,5 +56,10 @@ export class AuthController {
   @Get('/menuDel')
   async menuDel(@Query('id') id) {
     return this.auth.menuDel(id);
+  }
+  
+  @Get('/logLst')
+  async logLst(@Query() params) {
+    return this.log.lst(params);
   }
 }

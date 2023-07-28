@@ -15,11 +15,24 @@ function App() {
 
   const columns = [
     {
+      title: '序号',
+      dataIndex: 'id',
+      width: 80,
+      hideInSearch: true,
+      render: (d, r, i) => ~~((params.page - 1) * params.pageSize + i + 1),
+    },
+    {
       title: '角色名称',
       dataIndex: 'name',
       key: 'name',
       hideInSearch: true,
-    }, 
+    },
+    {
+      title: '角色描述',
+      dataIndex: 'describe',
+      key: 'describe',
+      hideInSearch: true,
+    },
     {
       title: '关键词',
       dataIndex: 'keyword',
@@ -43,7 +56,8 @@ function App() {
           )}
           {access['/api/auth/roleDel'] && (
             <Popconfirm
-              title="确定要删除吗?"
+              title="温馨提示"
+              description="删除后数据将不可还原，请谨慎操作！"
               onConfirm={() => onDel(record.id)}
               okText="确定"
               cancelText="取消"

@@ -18,7 +18,7 @@ export class Tool {
   /**
    * 获得请求IP
    */
-  async getReqIP() {
+  getReqIP() {
     const req = this.ctx.req;
     return (
       req.headers['x-forwarded-for'] ||

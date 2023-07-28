@@ -14,9 +14,10 @@ export async function disableUser(params: any) {
     });
 }
 
-export async function userMenuLst() {
+export async function userMenuLst(params: any) {
     return request('/api/user/menuLst', {
         method: 'GET',
+        params
     });
 }
 

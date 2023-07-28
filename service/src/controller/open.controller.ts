@@ -1,4 +1,4 @@
-import { App, Body, Controller, Inject, Post, File, Get } from '@midwayjs/core';
+import { App, Body, Controller, Inject, Post, File, Get, Query } from '@midwayjs/core';
 import { UserService } from '../service/user.service';
 import { Tool } from '../utils/tool';
 import { IApp } from '../interface';
@@ -33,6 +33,24 @@ export class OpenController {
   @Post('/login')
   async login(@Body() data): Promise<any> {
     return await this.user.login(data);
+  }
+
+  @Get('/deptLst', { middleware: ['isLoginMiddleware'] })
+  async deptLst(@Query('keyword') keyword) {
+    const db = this.app.db;
+    return db.select('id,name').from('department')
+      .where('name', keyword, 'like', 'ifHave')
+      .where('isDel', 0)
+      .find();
+  }
+
+  @Get('/roleLst', { middleware: ['isLoginMiddleware'] })
+  async roleLst(@Query('keyword') keyword) {
+    const db = this.app.db;
+    return db.select('id,name').from('role')
+      .where('name,describe', keyword, 'like', 'ifHave')
+      .where('isDel', 0)
+      .find();
   }
 
   @Post('/upload', { middleware: ['isLoginMiddleware'] })

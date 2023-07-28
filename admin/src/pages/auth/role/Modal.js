@@ -27,7 +27,13 @@ const App = () => {
                         角色名称
                     </div>
                     <Input placeHolder="请输入角色名称" value={actionData.name} onChange={e => onChange('name', e.target.value)} className="form-item-value" />
-                </div> 
+                </div>
+                <div className="form-item ">
+                    <div className="form-item-name">
+                        角色描述
+                    </div>
+                    <Input placeHolder="请输入角色描述" value={actionData.describe} onChange={e => onChange('describe', e.target.value)} className="form-item-value" />
+                </div>
                 <div className="form-item ">
                     <div className="form-item-name required">
                         权限配置

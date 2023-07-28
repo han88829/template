@@ -23,10 +23,10 @@ export default () => {
     });
     const getData = async (data) => {
         setLoading(true);
-        const res = await deptLst(data);
+        const res = await deptLst({ ...params, ...data });
         setData(res.data || []);
+        setParams({ ...params, ...data, total: res.data.length })
         setLoading(false);
-        setParams({ ...data, total: res.data.length })
     }
     /**
      * @description: 停用账号

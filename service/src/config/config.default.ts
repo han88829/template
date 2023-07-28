@@ -2,7 +2,7 @@ import { MidwayConfig } from '@midwayjs/core';
 
 export default {
   // use for cookie sign key, should change to your own and keep security
-  keys: 'zhijikeji-2221dxjiowen23409u0j',
+  keys: 'zhijikeji-i2wNxWQjIYVy46AgTna7',
   bodyParser: {
     enableTypes: ['json', 'form', 'text', 'xml'],
     formLimit: '1mb',
@@ -11,7 +11,7 @@ export default {
     xmlLimit: '1mb',
   },
   koa: {
-    port: 7010,
+    port: 7001,
   },
   pageSize: 20,
   mysqlConfig: config => {

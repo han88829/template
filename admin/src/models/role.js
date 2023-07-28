@@ -25,9 +25,9 @@ export default () => {
   });
   const getData = async (data) => {
     setLoading(true);
-    const res = await roleLst(data);
+    const res = await roleLst({ ...params, ...data });
     setData(res.data || []);
-    setParams({ ...data, total: res.data.length })
+    setParams({ ...params, ...data, total: res.data.length })
     setLoading(false);
   };
   const getAuthData = async () => {

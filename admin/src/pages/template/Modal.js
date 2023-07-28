@@ -1,5 +1,5 @@
 import { connect } from '@umijs/max';
-import { ModalForm, ProForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
+import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 const App = ({ template: { data, visible }, dispatch, loading }) => {
   return (
     <ModalForm
@@ -42,6 +42,43 @@ const App = ({ template: { data, visible }, dispatch, loading }) => {
         }}
         placeholder="请输入内容"
       />
+      <ProFormText
+        name="mobile"
+        label="手机号"
+        rules={[
+          {
+            required: true,
+          }, {
+            pattern: /^1\d{10}$/,
+            message: '手机号格式错误！',
+          }
+        ]}
+        placeholder="请输入手机号"
+      />
+      <ProFormText.Password
+        name="password"
+        label="密码"
+        placeholder="请输入密码"
+        rules={[
+          {
+            required: true,
+          },
+          {
+            min: 6,
+            message: '密码至少设置六位数',
+          }
+        ]}
+        fieldProps={{
+          type: "password"
+        }}
+      />
+      <ProFormSelect
+        name="roleId"
+        label="所属角色"
+        rules={[{ required: true, }]}
+        placeholder="请选择所属角色"
+        valueEnum={{ 1: "管理员" }}
+      ></ProFormSelect>
     </ModalForm>
   );
 };

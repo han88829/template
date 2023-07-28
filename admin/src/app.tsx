@@ -14,7 +14,6 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import locale from 'antd/locale/zh_CN';
 
-
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
@@ -138,7 +137,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
               enableDarkTheme
               settings={initialState?.settings}
               onSettingChange={(settings) => {
-                setInitialState((preInitialState) => ({
+                setInitialState((preInitialState: any) => ({
                   ...preInitialState,
                   settings,
                 }));
@@ -169,6 +168,7 @@ export const request = {
     (res: any) => {
       const data = res?.data ?? {};
       if (data?.code == 403) {
+        if (isNoLogin()) return res;
         const token = localStorage.getItem('token');
         message.error(token ? '登录已过期，请重新登录！' : '请登录！');
         history.push(`${loginPath}?redirect=${encodeURIComponent(location.pathname)}`);

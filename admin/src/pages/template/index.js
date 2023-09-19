@@ -1,18 +1,18 @@
 import { Space, Button, Popconfirm } from 'antd';
-import { connect } from '@umijs/max';
 import ActionModal from './Modal';
 import { PlusCircleOutlined } from '@ant-design/icons';
-import { PageContainer, ProTable } from '@ant-design/pro-components';
-import Detail from './Detail';
+import { ProTable, PageContainer } from '@ant-design/pro-components';
+import store from './store';
 
-const App = ({ template: { params, list }, dispatch }) => {
+const App = () => {
+  const { params, list, getData, onDel } = store();
   const columns = [
     {
       title: 'ID',
       dataIndex: 'id',
       width: 80,
       hideInSearch: true,
-      render: (d, r, i) => params.total - (params.page - 1) * params.pageSize - i,
+      render: (d, r, i) => ~~((params.page - 1) * params.pageSize + i + 1),
     },
     {
       title: '关键词',
@@ -37,20 +37,7 @@ const App = ({ template: { params, list }, dispatch }) => {
               dispatch({
                 type: 'template/update',
                 payload: {
-                  data: r,
-                  detailOpen: true,
-                },
-              });
-            }}
-          >
-            查看详情
-          </a>
-          <a
-            onClick={() => {
-              dispatch({
-                type: 'template/update',
-                payload: {
-                  data: { ...r, password: '', type: 'update' },
+                  data: { ...r, type: 'update' },
                   visible: true,
                 },
               });
@@ -60,16 +47,11 @@ const App = ({ template: { params, list }, dispatch }) => {
           </a>
           <Popconfirm
             title="确定要删除吗?"
-            onConfirm={() =>
-              dispatch({
-                type: 'template/del',
-                payload: r,
-              })
-            }
+            onConfirm={() => onDel(r.id)}
             okText="确定"
             cancelText="取消"
           >
-            <a>删除</a>
+            <a style={{ color: "red" }}>删除</a>
           </Popconfirm>
         </Space>
       ),
@@ -81,19 +63,14 @@ const App = ({ template: { params, list }, dispatch }) => {
       <ProTable
         pagination={{
           total: params.total,
-          pageSize: 15,
+          pageSize: 10,
         }}
         rowKey="id"
         headerTitle="列表"
-        request={(params) =>
-          dispatch({
-            type: 'template/query',
-            payload: {
-              page: params.current,
-              ...params,
-            },
-          })
-        }
+        request={(params) => getData({
+          page: params.current,
+          ...params,
+        })}
         dataSource={list}
         columns={columns}
         rowSelection={false}
@@ -103,18 +80,11 @@ const App = ({ template: { params, list }, dispatch }) => {
             icon={<PlusCircleOutlined />}
             type="primary"
             onClick={() => {
-              dispatch({
-                type: 'template/update',
-                payload: {
-                  visible: true,
-                  data: {
-                    type: 'add',
-                    name: '',
-                    account: '',
-                    password: '',
-                    mobile: '',
-                  },
-                },
+              store.setState({
+                visible: true,
+                data: {
+                  type: 'add',
+                }
               });
             }}
           >
@@ -127,12 +97,7 @@ const App = ({ template: { params, list }, dispatch }) => {
         }}
       />
       <ActionModal></ActionModal>
-      <Detail></Detail>
     </PageContainer>
   );
 };
-
-export default connect(({ template, loading }) => ({
-  template,
-  loading: loading.effects['template/save'],
-}))(App);
+export default App;

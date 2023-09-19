@@ -1,6 +1,8 @@
-import { connect } from '@umijs/max';
 import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
-const App = ({ template: { data, visible }, dispatch, loading }) => {
+import store from './store';
+
+const App = () => {
+  const { data, visible, onSave } = store();
   return (
     <ModalForm
       title={data.id ? '编辑公告' : '新建公告'}
@@ -11,10 +13,10 @@ const App = ({ template: { data, visible }, dispatch, loading }) => {
       autoComplete="off"
       modalProps={{
         destroyOnClose: true,
-        onCancel: () => dispatch({ type: 'template/update', payload: { visible: false } }),
+        onCancel: () => store.setState({ visible: false }),
       }}
       onFinish={async (values) => {
-        await dispatch({ type: 'template/save', payload: { ...data, ...values } });
+        onSave({ ...data, ...values });
       }}
     >
       <ProFormText
@@ -83,7 +85,4 @@ const App = ({ template: { data, visible }, dispatch, loading }) => {
   );
 };
 
-export default connect(({ template, loading }) => ({
-  template,
-  loading: loading.effects['template/save'],
-}))(App);
+export default App;

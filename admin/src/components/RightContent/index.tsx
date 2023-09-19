@@ -3,6 +3,7 @@ import React from 'react';
 import { useModel } from '@umijs/max';
 import Avatar from './AvatarDropdown';
 import styles from './index.less';
+import Modal from './Modal';
 
 const GlobalHeaderRight = () => {
   const { initialState } = useModel('@@initialState');
@@ -21,6 +22,7 @@ const GlobalHeaderRight = () => {
   return (
     <Space className={className}>
       <Avatar />
+      <Modal></Modal>
     </Space>
   );
 };

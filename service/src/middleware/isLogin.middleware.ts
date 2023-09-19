@@ -29,7 +29,7 @@ export class IsLoginMiddleware implements IMiddleware<Context, NextFunction> {
           user = await this.app.db.select('*').from('user').where('uid', id).findOne();
           await this.cache.set(`user-${id}`, user, { ttl: 60 * 60 * 24 });
         }
-        // 验证密码信息是否过期  
+        // 验证密码信息是否过期   
         if (this.tool.md5(user['uid'] + 'secret' + user['password']) != secret) throw new Error('密码过期，请重新登录！');
         if (user['isDel'] == 1) throw new Error('账户不存在！');
 

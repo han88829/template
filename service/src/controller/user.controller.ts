@@ -1,6 +1,7 @@
 import { App, Body, Controller, Get, Inject, Post, Query } from '@midwayjs/core';
 import { UserService } from '../service/user.service';
 import { Tool } from '../utils/tool';
+import { EditPwdDTO } from '../dto/user';
 
 @Controller('/api/user', { middleware: ['isLoginMiddleware'] })
 export class UserController {
@@ -54,4 +55,10 @@ export class UserController {
   async userSave(@Body() data) {
     return await this.user.userSave(data);
   }
+
+  @Post('/editPwd')
+  async editPwd(@Body() data: EditPwdDTO) {
+    return await this.user.editPwd(data);
+  }
+
 }

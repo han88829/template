@@ -105,3 +105,11 @@ export async function logLst(params: any) {
         params
     });
 }
+
+
+export async function editPwd(data: any) {
+    return request('/api/user/editPwd', {
+        method: 'POST',
+        data
+    });
+}

@@ -27,7 +27,7 @@ const isNoLogin = () => {
 const ICONS: any = Icons;
 const getMenuData = (data: any, pid = 0) => {
   return data
-    .filter((item: any) => item.pid === pid)
+    .filter((item: any) => item.pid === pid && item.type != 3)
     .map((x: any) => {
       const Icon = ICONS[x.icon];
       if (x.type == 1)

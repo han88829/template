@@ -4,11 +4,13 @@ import * as _ from 'lodash';
 import { CacheManager } from '@midwayjs/cache';
 import { LogService } from './log.service';
 import moment = require('moment');
+import { IApp } from '../interface';
+import { EditPwdDTO } from '../dto/user';
 
 @Provide()
 export class UserService {
   @App()
-  app;
+  app: IApp;
 
   @Inject()
   tool: Tool;
@@ -28,7 +30,6 @@ export class UserService {
     if (!user) throw new Error('用户不存在！');
 
     const password = this.tool.md5(user['uid'] + data['password']);
-    console.log(password);
 
     if (user['password'] !== password) throw new Error('密码错误！');
     const token = this.tool.encrypt({
@@ -106,12 +107,26 @@ export class UserService {
 
   async update(user) {
     // 更新缓存信息 
-    await this.cache.set(`user-${user['uid']} `, user, { ttl: 3600 * 24 });
+    await this.cache.set(`user-${user['uid']}`, user, { ttl: 3600 * 24 });
   }
 
   async menuLst() {
     const user = this.app.user;
     const ids = await this.app.db.select('`keys`').from('role').where('id', user['roleId']).value();
     return await this.app.db.select('*').from('menu').where('isDel', 0).where('id', user.account === 'admin' ? '' : (ids || "-1"), 'in', 'ifHave').orderby('sort').find();
+  }
+
+  async editPwd(data: EditPwdDTO) {
+    const user = await this.app.db.select().from('user').where('id', this.app.user.id).findOne();
+    const password = this.tool.md5(user['uid'] + data['oldPassword']);
+
+    if (password != user.password) throw new Error("原密码错误");
+    const newPassword: string = this.tool.md5(user['uid'] + data['password']);
+    const res = await this.app.db.update('user', { password: newPassword }).where('id', user.id).execute();
+    if (!res.affectedRows) throw new Error("密码修改失败！");
+    await this.update({
+      ...user, password: newPassword
+    });
+    return true;
   }
 }

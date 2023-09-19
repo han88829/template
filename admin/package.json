@@ -19,7 +19,7 @@
     "lint:js": "eslint --cache --ext .js,.jsx,.ts,.tsx --format=pretty ./src",
     "lint:prettier": "prettier -c --write \"**/**.{js,jsx,tsx,ts,less,md,json}\" --end-of-line auto",
     "openapi": "max openapi",
-    "prepare": "husky install",
+    "prepare": "cd ../ && husky install",
     "prettier": "prettier -c --write \"**/**.{js,jsx,tsx,ts,less,md,json}\"",
     "preview": "npm run build && max preview --port 8000",
     "record": "cross-env NODE_ENV=development REACT_APP_ENV=test max record --scene=login",
@@ -60,7 +60,8 @@
     "react": "^18.2.0",
     "react-dev-inspector": "^1.8.4",
     "react-dom": "^18.2.0",
-    "react-helmet-async": "^1.3.0"
+    "react-helmet-async": "^1.3.0",
+    "zustand": "^4.4.1"
   },
   "devDependencies": {
     "@ant-design/pro-cli": "^2.1.5",

@@ -40,7 +40,7 @@ const App = ({ menu: { actionData, visible, data }, dispatch, loading }) => {
                     <div className="form-item-name required">
                         节点名称
                     </div>
-                    <input value={actionData.name} onChange={e => onChange('name', e.target.value)} className="ant-input css-dev-only-do-not-override-19vzf0i form-item-value" />
+                    <input value={actionData.name} onChange={e => onChange('name', e.target.value)} className="custom-input" />
                 </div>
                 <div className="form-item ">
                     <div className="form-item-name">

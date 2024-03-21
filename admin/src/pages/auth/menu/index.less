@@ -95,3 +95,30 @@
     border-inline-end-width: 1px;
   }
 }
+
+
+.icon-pop {
+  height: 300px;
+  width: 400px;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 16px;
+  overflow-y: scroll;
+  cursor: pointer;
+
+  .icon svg {
+    color: #333;
+    height: 40px;
+    width: 100%;
+  }
+
+  .select svg,
+  .icon svg:hover {
+    color: #1691FF;
+  }
+}
+
+.anticon svg {
+  height: 100%;
+  width: 100%;
+}

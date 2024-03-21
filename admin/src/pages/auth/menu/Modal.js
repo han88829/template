@@ -1,7 +1,11 @@
-import { Modal, Input, Radio, TreeSelect, InputNumber, Switch } from 'antd';
+import { Modal, Input, Radio, TreeSelect, InputNumber, Switch, Popover } from 'antd';
 import { connect } from '@umijs/max';
-import { getTreeNode } from '@/utils'
+import { getTreeNode } from '@/utils';
+import * as icons from '@ant-design/icons';
+import { AppstoreOutlined } from '@ant-design/icons';
 
+const iconList = Object.keys(icons).filter((item) => typeof icons[item] === 'object' && item != 'default' && !item.includes('Filled') && !item.includes('TwoTone'))
+console.log(iconList);
 const App = ({ menu: { actionData, visible, data }, dispatch, loading }) => {
     const onClose = () => {
         dispatch({
@@ -77,6 +81,24 @@ const App = ({ menu: { actionData, visible, data }, dispatch, loading }) => {
                         节点图标
                     </div>
                     <Input value={actionData.icon} onChange={e => onChange('icon', e.target.value)} className="form-item-value" />
+                    <Popover
+                        trigger="click"
+                        content={
+                            <div className='icon-pop'>
+                                {
+                                    iconList.map(x => {
+                                        const Icon = icons[x];
+                                        return <Icon key={x} className={`icon ${actionData.icon === x ? 'select' : ''}`}
+                                            style={{ height: 50 }}
+                                            onClick={() => onChange('icon', x)}
+                                        />
+                                    })
+                                }
+                            </div>
+                        }
+                    >
+                        <AppstoreOutlined style={{ marginLeft: 20, width: 30, height: 30 }} />
+                    </Popover>
                 </div>}
                 <div className="form-item ">
                     <div className="form-item-name">

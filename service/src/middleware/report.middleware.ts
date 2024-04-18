@@ -14,7 +14,8 @@ export class ReportMiddleware implements IMiddleware<Context, NextFunction> {
           return ctx.body = { code: 200, data: ctx.body };
         }
       } catch (error) {
-        ctx.logger.error('发生错误--', error);
+        ctx.logger.error('发生错误--', error, ctx.request.method, { body: ctx.request.body, query: { ...ctx.request.query } });
+        if (error.status >= 404) ctx.status = error.status;
         ctx.body = {
           code: error.status || 0,
           message: error.message

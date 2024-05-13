@@ -4,6 +4,7 @@
     <view>
       <text class="title">{{ title }}</text>
     </view>
+    <uni-badge text="1"></uni-badge>
   </view>
 </template>
 
@@ -55,4 +56,4 @@ export default {
   font-size: 36rpx;
   color: #8f8f94;
 }
-</style> 
+</style>

@@ -17,6 +17,7 @@
     "@midwayjs/redis": "^3.13.8",
     "@midwayjs/upload": "^3.13.8",
     "@midwayjs/validate": "^3.13.8",
+    "agentkeepalive": "^4.5.0",
     "ali-h-mysql-ts": "^1.3.11",
     "ali-oss": "^6.17.1",
     "cache-manager": "^5.2.1",

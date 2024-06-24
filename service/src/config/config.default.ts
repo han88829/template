@@ -4,7 +4,10 @@ export default {
   // use for cookie sign key, should change to your own and keep security
   keys: 'zhijikeji-i2wNxWQjIYVy46AgTna7',
   bodyParser: {
-    enableTypes: ['json', 'form', 'text', 'xml'],
+    enableTypes: ['json', 'form', 'text', 'xml', 'html'],
+    extendTypes: {
+      text: ['text/html'],
+    },
     formLimit: '1mb',
     jsonLimit: '1mb',
     textLimit: '1mb',

@@ -23,9 +23,9 @@ export default () => {
     });
     const getData = async (data) => {
         setLoading(true);
-        const res = await deptLst({ ...params, ...data });
+        const res = await deptLst({ ...data });
         setData(res.data || []);
-        setParams({ ...params, ...data, total: res.data.length })
+        setParams({ ...data, total: res.data.length })
         setLoading(false);
     }
     /**

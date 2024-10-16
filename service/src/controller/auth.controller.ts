@@ -1,8 +1,18 @@
-import { App, Body, Controller, Get, Inject, Post, Query } from '@midwayjs/core';
+import {
+  App,
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Post,
+  Query,
+} from '@midwayjs/core';
 import { AuthService } from '../service/auth.service';
 import { LogService } from '../service/log.service';
 
-@Controller('/api/auth', { middleware: ['isLoginMiddleware', 'isAuthMiddleware'] })
+@Controller('/api/auth', {
+  middleware: ['isLoginMiddleware', 'isAuthMiddleware'],
+})
 export class AuthController {
   @App()
   app;
@@ -29,7 +39,7 @@ export class AuthController {
   }
 
   @Get('/roleLst')
-  async roleLst(@Query('name') name: string) {
+  async roleLst(@Query('keyword') name: string) {
     return this.auth.roleLst(name);
   }
 
@@ -57,7 +67,7 @@ export class AuthController {
   async menuDel(@Query('id') id) {
     return this.auth.menuDel(id);
   }
-  
+
   @Get('/logLst')
   async logLst(@Query() params) {
     return this.log.lst(params);

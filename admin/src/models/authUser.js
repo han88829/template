@@ -30,9 +30,9 @@ export default () => {
         if (data.roleId === "all") data.roleId = '';
         if (data.deptId === "all") data.deptId = '';
 
-        const res = await userLst({ ...params, ...data });
+        const res = await userLst({ ...data });
         setData(res?.data?.rows ?? []);
-        setParams({ ...params, ...data, total: res?.data?.total ?? 0 });
+        setParams({ ...data, total: res?.data?.total ?? 0 });
         setLoading(false);
     }
     const getExtraData = async () => {

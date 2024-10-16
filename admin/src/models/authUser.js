@@ -25,7 +25,7 @@ export default () => {
         total: 0,
         name: ""
     });
-    const getData = async (data) => {
+    const getData = async (data = {}) => {
         setLoading(true);
         if (data.roleId === "all") data.roleId = '';
         if (data.deptId === "all") data.deptId = '';

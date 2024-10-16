@@ -41,11 +41,11 @@ const App = () => {
             required: true,
           },
           {
-            min: 6,
-            message: '密码至少设置六位数',
+            pattern: /^(?=.*[A-Za-z])(?=.*\d)|(?=.*[A-Za-z])(?=.*[\W_])|(?=.*\d)(?=.*[\W_]).{6,}$/,
+            message: '密码至少六位且要包含字母、数字、特殊字符中的两项',
           }
         ]}
-        placeholder="请输入新密码"
+        placeholder="密码至少六位且要包含字母、数字、特殊字符中的两项"
       />
 
 
@@ -56,14 +56,14 @@ const App = () => {
             <ProFormText.Password
               name="confirmPassword"
               label="确认密码"
-              placeholder="请输入确认密码"
+              placeholder="密码至少六位且要包含字母、数字、特殊字符中的两项"
               rules={[
                 {
                   required: true,
                 },
                 {
-                  min: 6,
-                  message: '密码至少设置六位数',
+                  pattern: /^(?=.*[A-Za-z])(?=.*\d)|(?=.*[A-Za-z])(?=.*[\W_])|(?=.*\d)(?=.*[\W_]).{6,}$/,
+                  message: '密码至少六位且要包含字母、数字、特殊字符中的两项',
                 },
                 ({ getFieldValue }) => ({
                   validator(_, value) {

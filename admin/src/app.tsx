@@ -55,7 +55,7 @@ export async function getInitialState(): Promise<any> {
     try {
       const msg = await queryCurrentUser();
       const { data } = await userMenuLst();
-      return { currentUser: msg.data, authInfo: data };
+      return { currentUser: msg.data, authInfo: data.data, keys: data.keys };
     } catch (error) {
       history.push(loginPath);
     }
@@ -64,11 +64,12 @@ export async function getInitialState(): Promise<any> {
   // 如果不是登录页面，执行
   const { location } = history;
   if (!isNoLogin()) {
-    const { currentUser, authInfo }: any = await fetchUserInfo();
+    const { currentUser, authInfo, keys }: any = await fetchUserInfo();
     return {
       fetchUserInfo,
       currentUser,
       authInfo,
+      keys,
       settings: defaultSettings as Partial<LayoutSettings>,
     };
   }

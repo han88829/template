@@ -17,7 +17,7 @@ const App = () => {
                 onCancel: onClose,
             }}
             onFinish={async (values) => {
-                await onSubmit(values)
+                await onSubmit({ ...actionData, ...values })
             }}
         >
             <ProFormText

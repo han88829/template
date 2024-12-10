@@ -4,8 +4,8 @@ knex.QueryBuilder.extend(
   'page',
   async function (page: number = 1, pageSize: number = 10): Promise<any> {
     const offset = (page - 1) * pageSize;
-    const rows = await this.offset(offset).limit(pageSize);
-    const total = await this.clearSelect().count('* as count').first();
+    const rows = await this.clone().offset(offset).limit(pageSize);
+    const total = await this.clone().clearSelect().count('* as count').first();
     return {
       rows,
       total: total.count,

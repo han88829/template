@@ -17,20 +17,7 @@ export default {
     port: 7001,
   },
   pageSize: 20,
-  mysqlConfig: config => {
-    // 监听事件 执行前
-    config.onBeforeExecute(function ({ sql }) {
-      if (process.env.NODE_ENV === 'local') console.log('转成的sql', sql);
-    });
-    // 监听事件 执行后
-    config.onAfterExecute(function ({ sql, result }) {
-      // console.log(result);
-    });
-    // 监听事件 执行出错
-    config.onExecuteError(function ({ sql, error }) {
-      console.log('sql错误', error);
-    });
-  },
+
   oss: {
     accessKeyId: '*',
     accessKeySecret: '*',

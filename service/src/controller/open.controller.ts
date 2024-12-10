@@ -1,4 +1,13 @@
-import { App, Body, Controller, Inject, Post, File, Get, Query } from '@midwayjs/core';
+import {
+  App,
+  Body,
+  Controller,
+  Inject,
+  Post,
+  File,
+  Get,
+  Query,
+} from '@midwayjs/core';
 import { UserService } from '../service/user.service';
 import { Tool } from '../utils/tool';
 import { IApp } from '../interface';
@@ -8,7 +17,6 @@ import { UploadService } from '../service/upload.service';
 
 @Controller('/api/open')
 export class OpenController {
-
   @Inject()
   ctx: Context;
 
@@ -38,8 +46,10 @@ export class OpenController {
   @Get('/deptLst', { middleware: ['isLoginMiddleware'] })
   async deptLst(@Query('keyword') keyword) {
     const db = this.app.db;
-    return db.select('id,name').from('department')
-      .where('name', keyword, 'like', 'ifHave')
+    return db
+      .select('id', 'name')
+      .from('department')
+      ._where('name', 'like', keyword, 'ifHave')
       .where('isDel', 0)
       .find();
   }
@@ -47,8 +57,10 @@ export class OpenController {
   @Get('/roleLst', { middleware: ['isLoginMiddleware'] })
   async roleLst(@Query('keyword') keyword) {
     const db = this.app.db;
-    return db.select('id,name').from('role')
-      .where('name,describe', keyword, 'like', 'ifHave')
+    return db
+      .select('id', 'name')
+      .from('role')
+      ._where('name,describe', 'like', keyword, 'ifHave')
       .where('isDel', 0)
       .find();
   }

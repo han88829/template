@@ -56,10 +56,10 @@ export class UserService {
     const data = await db
       .select()
       .from('user')
-      .where('name,account,mobile', params.name, 'keywords', 'ifHave')
+      ._where('name,account,mobile', 'keywords', params.name, 'ifHave')
       .where('isDel', 0)
-      .where('roleId', params.roleId, '', 'ifHave')
-      .where('deptId', params.deptId, '', 'ifHave')
+      ._where('roleId', '', params.roleId, 'ifHave')
+      ._where('deptId', '', params.deptId, 'ifHave')
       .orderby('id desc')
       .page(params.page, this.pageSize);
     return data;
@@ -81,14 +81,14 @@ export class UserService {
     if (!user) throw new Error(`用户不存在`);
     if (user['account'] === 'admin') throw new Error('不能停用管理员账号');
 
-    const res = await db
-      .update('user', {
+    const res = await db('user')
+      .where('id', id)
+      .update({
         isDel: 1,
         delTime: moment().format('YYYY-MM-DD HH:mm:ss'),
-      })
-      .where('id', id)
-      .execute();
-    if (!res.affectedRows) throw new Error('操作失败');
+      });
+
+    if (!res) throw new Error('操作失败');
     await this.update({ ...user, isDel: 1 });
     // 保存日志信息
     await this.log.insert(2, `删除用户-${user.mobile}`);
@@ -115,7 +115,7 @@ export class UserService {
       .select('id')
       .from('user')
       .where('mobile', mobile)
-      .where('id', id, '<>', 'ifHave')
+      ._where('id', '<>', id, 'ifHave')
       .findOne();
     if (isRepeat) throw new Error('手机号已存在！');
 
@@ -126,17 +126,17 @@ export class UserService {
     else delete insertData['password'];
 
     if (insertData['id'])
-      res = await db
-        .update('user', insertData)
-        .where('id', insertData['id'])
-        .execute();
-    else res = await db.insert('user', insertData).execute();
-    if (!res.affectedRows) throw new Error('操作失败');
+      res = await db('user').where('id', insertData['id']).update(insertData);
+    else
+      res = await db('user')
+        .insert(insertData)
+        .then(x => x[0]);
+    if (!res) throw new Error('操作失败');
 
     const user = await db
       .select('*')
       .from('user')
-      .where('id', insertData['id'] || res.insertId)
+      .where('id', insertData['id'] || res)
       .findOne();
     await this.update(user);
     // 保存日志信息
@@ -156,7 +156,7 @@ export class UserService {
   async menuLst() {
     const user = this.app.user;
     const ids = await this.app.db
-      .select('`keys`')
+      .select('keys')
       .from('role')
       .where('id', user['roleId'])
       .value();
@@ -165,10 +165,10 @@ export class UserService {
         .select('*')
         .from('menu')
         .where('isDel', 0)
-        .where(
+        ._where(
           'id',
-          user.account === 'admin' ? '' : ids || '-1',
           'in',
+          user.account === 'admin' ? '' : ids || '-1',
           'ifHave'
         )
         .orderby('sort')
@@ -192,11 +192,12 @@ export class UserService {
 
     if (password != user.password) throw new Error('原密码错误');
     const newPassword: string = this.tool.md5(user['uid'] + data['password']);
-    const res = await this.app.db
-      .update('user', { password: newPassword })
+    const res = await this.app
+      .db('user')
       .where('id', user.id)
-      .execute();
-    if (!res.affectedRows) throw new Error('密码修改失败！');
+      .update({ password: newPassword });
+
+    if (!res) throw new Error('密码修改失败！');
     await this.update({
       ...user,
       password: newPassword,

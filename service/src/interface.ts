@@ -1,21 +1,33 @@
-import DbClient from "ali-h-mysql-ts";
 import * as koa from '@midwayjs/koa';
-
-/**
- * @description User-Service parameters
- */
-export interface IUserOptions {
-  uid: number;
-}
+import { Knex } from 'knex';
 
 declare module '@midwayjs/core' {
   interface Context {
-    db: any;
+    db: Knex;
+  }
+}
+
+declare module 'knex' {
+  namespace Knex {
+    interface QueryBuilder {
+      page(page: number, pageSize: number): Knex.QueryBuilder;
+      findOne(): Knex.QueryBuilder;
+      find(num?: number): Knex.QueryBuilder;
+      value(field?: string): Knex.QueryBuilder;
+      orderby(order: string): Knex.QueryBuilder;
+      groupby(group: string): Knex.QueryBuilder;
+      _where(
+        name,
+        operator?,
+        value?,
+        ifHave?: boolean | string
+      ): Knex.QueryBuilder;
+    }
   }
 }
 
 export interface IApp extends koa.Application {
-  db: DbClient;
   user: any;
-  deptIds: String | Array<Number>
+  db: Knex;
+  deptIds: any;
 }

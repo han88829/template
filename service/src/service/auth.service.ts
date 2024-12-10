@@ -2,11 +2,12 @@ import { App, Config, Inject, Provide } from '@midwayjs/core';
 import { Tool } from '../utils/tool';
 import * as _ from 'lodash';
 import { LogService } from './log.service';
+import { IApp } from '../interface';
 
 @Provide()
 export class AuthService {
   @App()
-  app;
+  app: IApp;
 
   @Inject()
   tool: Tool;
@@ -21,7 +22,7 @@ export class AuthService {
     return await this.app.db
       .select('*')
       .from('department')
-      .where('name', name, 'like', 'ifHave')
+      ._where('name', 'like', name, 'ifHave')
       .where('isDel', 0)
       .orderby('id desc')
       .find();
@@ -35,35 +36,37 @@ export class AuthService {
       .select('id')
       .from('department')
       .where('name', name)
-      .where('id', id, '<>', 'ifHave')
+      ._where('id', '<>', id, 'ifHave')
       .findOne();
     if (isRepeat) throw new Error('账号已存在！');
 
     let res;
     if (id)
-      res = await db
-        .update('department', { name, userId: user['id'] })
+      res = await db('department')
         .where('id', id)
-        .execute();
-    else
-      res = await db
-        .insert('department', {
+        .update({ name, userId: user['id'] });
+    else {
+      res = await db('department')
+        .insert({
           name,
           userId: user['id'],
         })
-        .execute();
-    if (!res.affectedRows) throw new Error('操作失败');
+        .then(x => x[0]);
+    }
+
+    if (!res) throw new Error('操作失败');
     // 保存日志信息
     await this.log.insert(2, id ? `更新部门名称-${name}` : `新增部门-${name}`);
     return true;
   }
 
   async deptDel(id) {
-    const res = await this.app.db
-      .update('department', { isDel: 1 })
+    const res = await this.app
+      .db('department')
       .where('id', id)
-      .execute();
-    if (!res.affectedRows) throw new Error('操作失败');
+      .update({ isDel: 1 });
+
+    if (!res) throw new Error('操作失败');
     // 保存日志信息
     await this.log.insert(2, `删除部门-${id}`);
     return true;
@@ -73,7 +76,7 @@ export class AuthService {
     return await this.app.db
       .select('*')
       .from('role')
-      .where('name', name, 'like', 'ifHave')
+      ._where('name', 'like', name, 'ifHave')
       .where('isDel', 0)
       .orderby('id desc')
       .find();
@@ -86,20 +89,21 @@ export class AuthService {
     if (_.isArray(deptIds)) deptIds = deptIds.join();
     let res;
     if (id)
-      res = await db
-        .update('role', { ...data, deptIds, keys, userId: user['id'] })
+      res = await db('role')
         .where('id', id)
-        .execute();
-    else
-      res = await db
-        .insert('role', {
+        .update({ ...data, deptIds, keys, userId: user['id'] });
+    else {
+      res = await db('role')
+        .insert({
           ...data,
           keys,
           deptIds,
           userId: user['id'],
         })
-        .execute();
-    if (!res.affectedRows) throw new Error('操作失败');
+        .then(x => x[0]);
+    }
+
+    if (!res) throw new Error('操作失败');
     await this.log.insert(
       2,
       id ? `更新角色名称-${data.name}` : `新增角色-${data.name}`
@@ -108,11 +112,8 @@ export class AuthService {
   }
 
   async roleDel(id) {
-    const res = await this.app.db
-      .update('role', { isDel: 1 })
-      .where('id', id)
-      .execute();
-    if (!res.affectedRows) throw new Error('操作失败');
+    const res = await this.app.db('role').where('id', id).update({ isDel: 1 });
+    if (!res) throw new Error('操作失败');
     await this.log.insert(2, `删除角色-${id}`);
     return true;
   }
@@ -130,9 +131,17 @@ export class AuthService {
 
   async menuSave(data) {
     const user = this.app.user;
-    const res = await this.app.db
-      .save('menu', { ...data, userId: user.id })
-      .execute();
+    let res;
+    if (data.id)
+      res = await this.app
+        .db('menu')
+        .where('id', data.id)
+        .update({ ...data, userId: user.id });
+    else
+      res = await this.app
+        .db('menu')
+        .insert({ ...data, userId: user.id })
+        .then(x => x[0]);
     if (!res) throw new Error('操作失败');
     await this.log.insert(
       2,
@@ -142,10 +151,8 @@ export class AuthService {
   }
 
   async menuDel(id) {
-    const res = await this.app.db
-      .update('menu', { isDel: 1 })
-      .where('id', id)
-      .execute();
+    const res = await this.app.db('menu').where('id', id).update({ isDel: 1 });
+
     if (!res) throw new Error('操作失败');
     await this.log.insert(2, `删除菜单-${id}`);
     return true;

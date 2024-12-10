@@ -5,11 +5,11 @@ import * as info from '@midwayjs/info';
 import { join } from 'path';
 import { ReportMiddleware } from './middleware/report.middleware';
 import * as upload from '@midwayjs/upload';
-import DbClient from 'ali-h-mysql-ts';
 import { IApp } from './interface';
 import * as cache from '@midwayjs/cache';
 import * as axios from '@midwayjs/axios';
 import * as crossDomain from '@midwayjs/cross-domain';
+import knex from './knex';
 
 @Configuration({
   imports: [
@@ -28,28 +28,24 @@ import * as crossDomain from '@midwayjs/cross-domain';
 })
 export class ContainerLifeCycle {
   @App()
-  app: koa.Application;
+  app: IApp;
 
   @Config('client')
   client;
 
-  @Config('clients')
-  clients;
-
   @Config()
   data;
-
-  @Config('mysqlConfig')
-  mysqlConfig;
-
   async onReady(_, app: IApp) {
     // add middleware
     this.app.useMiddleware([ReportMiddleware]);
 
     // 如果支持多实例，则挂载到app其他key上
-    app.db = new DbClient({
-      mysql: this.client,
-      config: this.mysqlConfig,
+    app.db = knex({
+      client: 'mysql2',
+      connection: {
+        ...this.client,
+      },
+      pool: { min: 0, max: 7 },
     });
   }
 }

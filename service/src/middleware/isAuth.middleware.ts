@@ -18,34 +18,37 @@ export class IsAuthMiddleware implements IMiddleware<Context, NextFunction> {
   resolve() {
     return async (ctx: Context, next: NextFunction) => {
       const user = this.app.user;
-      if (user['account'] == 'admin') {
-        this.app.deptIds = await this.app.db
-          .select('id')
-          .from('department')
-          .where('isDel', 0)
-          .pluck('id');
-        return await next();
-      }
+      // if (user['account'] == 'admin') {
+      //   this.app.deptIds = await this.app.db
+      //     .select('id')
+      //     .from('department')
+      //     .where('isDel', 0)
+      //     .pluck('id');
+      //   return await next();
+      // }
 
       const url = ctx.request.url.split('?')[0];
       // 获取用户权限列表
       const role: any = await this.app.db
-        .select('`keys`')
+        .select('keys')
         .from('role')
         .where('isDel', 0)
         .where('id', user['roleId'])
-        .value();
+        .findOne();
       if (!role) throw new Error('未设置角色权限');
       let keys = await this.app.db
         .select('path')
         .from('menu')
         .where('isDel', 0)
         .where('type', 3)
-        .where('id', 'in', role)
+        .where('id', 'in', role.keys.split(','))
         .find();
       keys = keys.map(x => x.path);
       if (!keys.includes(url)) throw new Error('暂无权限访问！');
       this.app.deptIds = (role.deptIds || '').split(',').filter(x => !!x);
+      if (this.app.deptIds.includes(user.deptId))
+        this.app.deptIds.push(user.deptId);
+
       await next();
     };
   }

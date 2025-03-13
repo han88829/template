@@ -3,15 +3,15 @@
 
  Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80100 (8.1.0)
+ Source Server Version : 90200 (9.2.0)
  Source Host           : localhost:3306
  Source Schema         : template
 
  Target Server Type    : MySQL
- Target Server Version : 80100 (8.1.0)
+ Target Server Version : 90200 (9.2.0)
  File Encoding         : 65001
 
- Date: 14/11/2023 15:29:24
+ Date: 13/03/2025 13:46:03
 */
 
 SET NAMES utf8mb4;
@@ -29,12 +29,13 @@ CREATE TABLE `department` (
   `userId` int DEFAULT NULL COMMENT '操作用户id',
   `isDel` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of department
 -- ----------------------------
 BEGIN;
+INSERT INTO `department` (`id`, `createTime`, `updateTime`, `name`, `userId`, `isDel`) VALUES (2, '2025-03-13 13:29:47', '2025-03-13 13:43:36', '管理员', 1, 0);
 COMMIT;
 
 -- ----------------------------
@@ -49,25 +50,12 @@ CREATE TABLE `log` (
   `content` varchar(255) NOT NULL COMMENT '操作内容',
   `type` tinyint NOT NULL DEFAULT '1' COMMENT '1登录\n2系统管理\n3岗位管理\n4休假抽查\n5车辆管控配置\n6饮酒管控配置',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of log
 -- ----------------------------
 BEGIN;
-INSERT INTO `log` (`id`, `createTime`, `updateTime`, `userId`, `content`, `type`) VALUES (1, '2023-07-28 16:19:24', '2023-07-28 16:19:24', 1, '登录管理后台 (IP:127.0.0.1)', 1);
-INSERT INTO `log` (`id`, `createTime`, `updateTime`, `userId`, `content`, `type`) VALUES (2, '2023-09-19 15:55:38', '2023-09-19 15:55:38', 1, '登录管理后台 (IP:::1)', 1);
-INSERT INTO `log` (`id`, `createTime`, `updateTime`, `userId`, `content`, `type`) VALUES (3, '2023-09-19 16:46:50', '2023-09-19 16:46:50', 1, '登录管理后台 (IP:::1)', 1);
-INSERT INTO `log` (`id`, `createTime`, `updateTime`, `userId`, `content`, `type`) VALUES (4, '2023-09-19 16:49:21', '2023-09-19 16:49:21', 1, '登录管理后台 (IP:::1)', 1);
-INSERT INTO `log` (`id`, `createTime`, `updateTime`, `userId`, `content`, `type`) VALUES (5, '2023-09-19 16:50:33', '2023-09-19 16:50:33', 1, '登录管理后台 (IP:::1)', 1);
-INSERT INTO `log` (`id`, `createTime`, `updateTime`, `userId`, `content`, `type`) VALUES (6, '2023-09-19 16:51:59', '2023-09-19 16:51:59', 1, '登录管理后台 (IP:::1)', 1);
-INSERT INTO `log` (`id`, `createTime`, `updateTime`, `userId`, `content`, `type`) VALUES (7, '2023-09-19 16:55:19', '2023-09-19 16:55:19', 1, '登录管理后台 (IP:::1)', 1);
-INSERT INTO `log` (`id`, `createTime`, `updateTime`, `userId`, `content`, `type`) VALUES (8, '2023-09-19 16:57:17', '2023-09-19 16:57:17', 1, '登录管理后台 (IP:::1)', 1);
-INSERT INTO `log` (`id`, `createTime`, `updateTime`, `userId`, `content`, `type`) VALUES (9, '2023-09-19 16:58:29', '2023-09-19 16:58:29', 1, '登录管理后台 (IP:::1)', 1);
-INSERT INTO `log` (`id`, `createTime`, `updateTime`, `userId`, `content`, `type`) VALUES (10, '2023-09-19 16:59:51', '2023-09-19 16:59:51', 1, '登录管理后台 (IP:::1)', 1);
-INSERT INTO `log` (`id`, `createTime`, `updateTime`, `userId`, `content`, `type`) VALUES (11, '2023-09-19 17:00:39', '2023-09-19 17:00:39', 1, '登录管理后台 (IP:::1)', 1);
-INSERT INTO `log` (`id`, `createTime`, `updateTime`, `userId`, `content`, `type`) VALUES (12, '2023-09-19 17:01:02', '2023-09-19 17:01:02', 1, '登录管理后台 (IP:::1)', 1);
-INSERT INTO `log` (`id`, `createTime`, `updateTime`, `userId`, `content`, `type`) VALUES (13, '2023-09-19 17:01:18', '2023-09-19 17:01:18', 1, '登录管理后台 (IP:::1)', 1);
 COMMIT;
 
 -- ----------------------------
@@ -138,7 +126,7 @@ CREATE TABLE `role` (
 -- Records of role
 -- ----------------------------
 BEGIN;
-INSERT INTO `role` (`id`, `name`, `menuid`, `keys`, `userId`, `createTime`, `updateTime`, `deptIds`, `describe`, `isDel`) VALUES (1, '管理员', NULL, '1,2,12,19,21,23,24,17,26,27,18,29,30', 65, '2022-05-07 15:55:39', '2023-07-28 16:18:13', '', NULL, 0);
+INSERT INTO `role` (`id`, `name`, `menuid`, `keys`, `userId`, `createTime`, `updateTime`, `deptIds`, `describe`, `isDel`) VALUES (1, '管理员', NULL, '1,2,12,19,21,23,24,17,26,27,18,29,30,20,25,28,31,34,32', 1, '2022-05-07 15:55:39', '2023-07-28 16:18:13', '2', NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -168,7 +156,7 @@ CREATE TABLE `user` (
 -- Records of user
 -- ----------------------------
 BEGIN;
-INSERT INTO `user` (`id`, `createTime`, `updateTime`, `name`, `account`, `password`, `ava`, `roleId`, `mobile`, `deptId`, `isDel`, `uid`, `delTime`) VALUES (1, '2022-04-01 13:33:43', '2023-09-19 17:01:15', '管理员', 'admin', 'S/JX7rGzbCEuKxPhlPkgsg==', NULL, NULL, 'admin', NULL, 0, 'piU7dz4vYCL93tJZPhEa', '0');
+INSERT INTO `user` (`id`, `createTime`, `updateTime`, `name`, `account`, `password`, `ava`, `roleId`, `mobile`, `deptId`, `isDel`, `uid`, `delTime`) VALUES (1, '2022-04-01 13:33:43', '2025-03-13 13:45:48', '管理员', 'admin', 'S/JX7rGzbCEuKxPhlPkgsg==', NULL, 1, 'admin', 2, 0, 'piU7dz4vYCL93tJZPhEa', '0');
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

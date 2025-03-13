@@ -47,13 +47,15 @@ export default () => {
   };
 
   const onShow = (data) => {
+    console.log(data);
+
     setVisible(true);
     if (data && !_.isArray(data.keys))
       data.keys = (data.keys || '')
         .split(',')
         .filter((x) => x)
         .map((x) => ~~x);
-    if (data)
+    if (data && !Array.isArray(data.deptIds))
       data.deptIds = (data.deptIds || '')
         .split(',')
         .filter((x) => x)

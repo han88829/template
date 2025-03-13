@@ -1,4 +1,4 @@
-import { Modal, Tree } from 'antd';
+import { Modal, Tree, Select } from 'antd';
 import { useEffect } from 'react';
 import { useModel } from '@umijs/max';
 import Input from '@/components/Input';
@@ -11,6 +11,20 @@ const App = () => {
     }, []);
     const onChange = (name, value) => {
         setActionData({ ...actionData, [name]: value });
+    }
+
+    // 将部门列表转换为扁平结构的选项
+    const formatDeptOptions = (list, options = []) => {
+        list.forEach(item => {
+            options.push({
+                label: item.name,
+                value: item.id
+            });
+            if (item.children && item.children.length) {
+                formatDeptOptions(item.children, options);
+            }
+        });
+        return options;
     }
 
     return (
@@ -26,13 +40,28 @@ const App = () => {
                     <div className="form-item-name required">
                         角色名称
                     </div>
-                    <Input placeHolder="请输入角色名称" value={actionData.name} onChange={e => onChange('name', e.target.value)} className="form-item-value" />
+                    <Input placeholder="请输入角色名称" value={actionData.name} onChange={e => onChange('name', e.target.value)} className="form-item-value" />
                 </div>
                 <div className="form-item ">
                     <div className="form-item-name">
                         角色描述
                     </div>
-                    <Input placeHolder="请输入角色描述" value={actionData.describe} onChange={e => onChange('describe', e.target.value)} className="form-item-value" />
+                    <Input placeholder="请输入角色描述" value={actionData.describe} onChange={e => onChange('describe', e.target.value)} className="form-item-value" />
+                </div>
+                <div className="form-item ">
+                    <div className="form-item-name">
+                        数据权限
+                    </div>
+                    <Select
+                        className="form-item-value"
+                        mode="multiple"
+                        placeholder="请选择部门"
+                        style={{ width: '100%' }}
+                        value={actionData.deptIds || []}
+                        onChange={value => onChange('deptIds', value)}
+                        options={formatDeptOptions(deptLst)}
+                        optionFilterProp="label"
+                    />
                 </div>
                 <div className="form-item ">
                     <div className="form-item-name required">

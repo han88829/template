@@ -47,8 +47,6 @@ export default () => {
   };
 
   const onShow = (data) => {
-    console.log(data);
-
     setVisible(true);
     if (data && !_.isArray(data.keys))
       data.keys = (data.keys || '')
